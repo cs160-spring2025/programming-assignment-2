@@ -139,10 +139,13 @@
         </li>
 
         <li>
-          <a href="#Part_1">Part 1 · Currency Conversion</a>
+          <a href="#Part_1">Part 1 · Misbehaving bubble wrap</a>
         </li>
         <li>
-          <a href="#Part_2">Part 2 · Responsive Grid Layouts</a>
+          <a href="#Part_2">Part 2 · Incremental bubble wrap</a>
+        </li>
+        <li>
+          <a href="#Part_3">Part 3 · Templated element creation</a>
         </li>
       </ul>
 
@@ -235,7 +238,6 @@
 
       <ul>
         <li>submission.zip</li>
-        <!-- TODO -->
         <ul>
           <li>part1/</li>
           <ul>
@@ -493,41 +495,112 @@
 
         <p>
           In the last task, we added new circle elements to the page dynamically
-          with JavaScript. Adding something to the page isn’t too tricky:
+          with JavaScript.
         </p>
 
         <p>
-          <strong>First, locate the element you want to insert into:</strong>
+          In general, it's easy to add new components of any type to the page:
         </p>
 
-        <p>
-          This could be <code>document.body</code> (the full “body” page), or
-          any DOM element that can have children, located with e.g.
-          <code>document.querySelector()</code>.
-        </p>
-
-        <pre><code class="language-javascript">const containerElement = document.querySelector("main");</code></pre>
-
-        <p><strong>Then, choose:</strong></p>
-        <div style="margin-left: 24px">
+        <div
+          style="
+            background-color: #f3f3f3;
+            border: 1px dashed #ddd;
+            padding: 12px;
+          "
+        >
           <p>
-            <em>By constructing DOM objects:</em>
+            <strong>First, locate the element you want to insert into:</strong>
           </p>
-          <pre><code class="language-javascript">const newDiv = document.createElement("div"); 
-          newDiv.style.color = "red"; 
-          newDiv.textContent = "hello!"; 
-          containerElement.appendChild(newDiv);</code></pre>
+
           <p>
-            <em>With innerHTML:</em>
+            This could be <code>document.body</code> (the full “body” page), or
+            any DOM element that can have children, located with e.g.
+            <code>document.querySelector()</code>.
           </p>
-          <pre><code class="language-javascript">containerElement.innerHTML += '&lt;div style="color: red;"&gt;' + 'hello!' + '&lt;/div&gt;';</code></pre>
+
+          <pre><code class="language-javascript">const containerElement = document.querySelector("main");</code></pre>
+
+          <p><strong>Then, choose:</strong></p>
+          <div style="margin-left: 24px">
+            <p>
+              <em>By constructing DOM objects:</em>
+            </p>
+            <pre><code class="language-javascript">const newDiv = document.createElement("div"); 
+      newDiv.style.color = "red"; 
+      newDiv.textContent = "hello!"; 
+      containerElement.appendChild(newDiv);</code></pre>
+            <p>
+              <em>With innerHTML:</em>
+            </p>
+            <pre><code class="language-javascript">containerElement.innerHTML += '&lt;div style="color: red;"&gt;' + 'hello!' + '&lt;/div&gt;';</code></pre>
+          </div>
+
+          <p>
+            You can use either technique to add new elements to the page. You
+            may do this for a number of reasons, like in response to a user’s
+            action.
+          </p>
         </div>
 
         <p>
-          Adding a <em>nested</em> tree of elements can be a bit cumbersome:
+          As you will find as you build more complex applications, you often
+          want to add a more complex structure to the page consisting of
+          multiple elements.
         </p>
 
-        <pre><code class="language-javascript">const profileDiv = document.createElement("div");
+        <p>
+          For example, see this interaction from GrubHub, which adds the “Chile
+          Verde” item to the cart dynamically using JavaScript.
+        </p>
+
+        <p>
+          <video
+            controls
+            autoplay
+            loop
+            muted
+            playsinline
+            style="max-width: 80%; margin: 0 auto; display: block"
+          >
+            <source src="images/grubhub-cart.webm" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </p>
+
+        <p>
+          The new cart item is a complex hierarchy of HTML components,
+          containing the item’s title, a delete button, ingredient information,
+          and other detail. See this screenshot from my browser's developer
+          tools:
+        </p>
+
+        <img
+          style="max-width: 80%; margin: 0 auto; display: block"
+          src="images/grubhub-component-tree.png"
+          alt="A nested tree of &lt;div&gt;, &lt;span&gt; and other elements representing the GrubHub cart item."
+        />
+
+        <p>
+          It can be a bit cumbersome to add a complex <em>nested</em> tree of
+          elements to your page. Take this simpler example, with just three
+          total HTML elements:
+        </p>
+
+        <div
+          style="
+            background-color: #f3f3f3;
+            border: 1px dashed #ddd;
+            padding: 12px;
+          "
+        >
+          <p>
+            As before, you can create elements in JavaScript and use DOM
+            functions (like <code>appendChild</code>) to organize them in a
+            hierarchy:
+          </p>
+
+          <pre><code class="language-javascript">const profileDiv = document.createElement("div");
 profileDiv.addClass("user-profile");
 
 const profilePic = document.createElement("img");
@@ -543,44 +616,41 @@ profileDiv.appendChild(bio);
 
 containerElement.appendChild(profileDiv);</code></pre>
 
-        <p>
-          (or, with innerHTML, this time using
-          <a
-            href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals"
-            >template literal syntax</a
-          >):
-        </p>
+          <p>
+            Or use <code>innerHTML</code>, this time using
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals"
+              >template literal syntax</a
+            >:
+          </p>
 
-        <pre><code class="language-javascript">containerElement.innerHTML += `
+          <pre><code class="language-javascript">containerElement.innerHTML += `
   &lt;div class="user-profile"&gt;
     &lt;img src="${picUrl}" class="profile-pic"&gt;
     &lt;div class="bio"&gt;${userBio}&lt;/div&gt;
   &lt;/div&gt;
 `;</code></pre>
+        </div>
 
         <p>
-          The DOM-based approach quickly becomes difficult to read. Using
-          innerHTML with template strings is a lot more ergonomic, but it comes
-          with some danger. Since you’re not separating the structure
-          information (your HTML template) from the interpolated data (<code
-            >profilePic</code
-          >
-          and <code>userBio</code>), your page can break if the
-          <code>userBio</code> variable happens to have HTML code inside (e.g.
-          containing <code>&lt;/div&gt;</code>), and this can lead to
+          The DOM-based approach quickly becomes difficult to read and reason
+          about.
+        </p>
+
+        <p>
+          Using <code>innerHTML</code> with template strings is a lot more
+          ergonomic, but it comes with some danger. Since you’re not separating
+          the structure information (your HTML template) from the interpolated
+          data (<code>profilePic</code> and <code>userBio</code>), your page can
+          break if the <code>userBio</code> variable happens to have HTML code
+          inside (e.g. containing <code>&lt;/div&gt;</code>), and this can lead
+          to
           <a
             href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html#output-encoding-for-html-contexts"
             >cross-site scripting vulnerabilities</a
           >
           (similar to what you see in other cases where data and code are
           interspersed, like in SQL injection or stack overrun vulnerabilities).
-        </p>
-
-        <p>
-          In addition, building more complex structures with innerHTML can lead
-          to structural errors (e.g. missing closing tags) that would be avoided
-          with a more structured DOM-based approach (since there’s no “HTML
-          parsing” step if you’re just calling DOM methods directly).
         </p>
 
         <p>
@@ -597,9 +667,15 @@ containerElement.appendChild(profileDiv);</code></pre>
           We’ve included the full Handlebars distribution in the starter code
           for this part of the assignment and imported it into the page so you
           can use the global Handlebars object in your own JavaScript code.
-          <strong>Don’t change this import</strong>; the autograder tests may
-          mock the Handlebars object to check whether you’re using it correctly.
         </p>
+
+        <div class="admonition-warning">
+          Make sure to keep the existing <code>handlebars.js</code> import at
+          the top of the HTML file; do not install the Handlebars dependency
+          yourself. In the autograder, we augment this import with a
+          <em>test spy</em> that makes sure that you called Handlebars
+          correctly.
+        </div>
 
         <p>
           To create a new template function in our JavaScript code, we can call
@@ -638,10 +714,39 @@ const fullString = courseTemplate(variables);
 
 console.log(fullString); // I'm taking <strong>CS 160</strong>!</code></pre>
 
+        <p>This also works for templates containing HTML code:</p>
+
+        <pre><code
+            class="language-javascript"
+          >const profileTemplate = Handlebars.compile(`
+  &lt;div class="user-profile"&gt;
+    &lt;img src="{{picUrl}}" class="profile-pic"&gt;
+    &lt;div class="bio"&gt;{{userBio}}&lt;/div&gt;
+  &lt;/div&gt;
+`);</code></pre>
+
         <p>
-          We can safely use this string in a component’s innerHTML, since
-          Handlebars sanitizes HTML in variables for us:
+          <code>{{picUrl}}</code> and <code>{{userBio}}</code> are variables
+          that can be replaced when we use the Handlebars template:
         </p>
+
+        <pre><code class="language-javascript">const variables = {
+  picUrl: "https://example.com/pic.jpg",
+  userBio: "I'm a student at UC Berkeley!",
+};
+
+const fullString = profileTemplate(variables);
+
+console.log(fullString);
+
+/* Result:
+  &lt;div class="user-profile"&gt;
+    &lt;img src="https://example.com/pic.jpg" class="profile-pic"&gt;
+    &lt;div class="bio"&gt;I'm a student at UC Berkeley!&lt;/div&gt;
+  &lt;/div&gt;
+*/</code></pre>
+
+        <p>We can then use this string in a component’s innerHTML:</p>
 
         <pre><code class="language-javascript">containerElement.innerHTML += fullString;</code></pre>
 
@@ -656,6 +761,42 @@ console.log(fullString); // I'm taking <strong>CS 160</strong>!</code></pre>
         </p>
 
         <p>
+          This is safe, since Handlebars
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Glossary/Character_reference"
+            >sanitizes HTML</a
+          >
+          in variables for us:
+        </p>
+
+        <pre><code class="language-javascript">const variables = {
+  // If a user can control these variables, they might try to add HTML or JavaScript
+  // code that could break or even hack our page:
+  picUrl: "\" onerror=\"alert(1)",
+  userBio: "&lt/div&gt; &lt;script&gt;...&lt;/script&gt;",
+};
+
+const fullString = profileTemplate(variables);
+
+console.log(fullString);
+
+/* But Handlebars renders these special characters safely
+   rather than allowing them to become HTML code:
+
+  &lt;div class=&quot;user-profile&quot;&gt;
+    &lt;img src=&quot;&amp;quot; onerror=&amp;quot;alert(1)&quot; class=&quot;profile-pic&quot;&gt;
+    &lt;div class=&quot;bio&quot;&gt;&amp;lt;/div&amp;gt; &amp;lt;script&amp;gt;...&amp;lt;/script&amp;gt;&lt;/div&gt;
+  &lt;/div&gt;
+ */</code></pre>
+
+        <p>
+          As you'll see in this assignment, you can also store your templates
+          inside your HTML code (rather than inside a JavaScript string), which
+          can be a nice way to keep your HTML structure separate from your code
+          logic.
+        </p>
+
+        <p>
           Handlebars offers a few additional helpful features, like
           <a href="https://handlebarsjs.com/guide/partials.html#basic-partials"
             >partials</a
@@ -664,7 +805,8 @@ console.log(fullString); // I'm taking <strong>CS 160</strong>!</code></pre>
           <a href="https://handlebarsjs.com/guide/builtin-helpers.html"
             >conditionals</a
           >
-          (which you’ll use in this task).
+          (which you’ll use in this task to choose which components of a
+          template should be rendered based on the input variable values).
         </p>
 
         <p>
@@ -675,7 +817,10 @@ console.log(fullString); // I'm taking <strong>CS 160</strong>!</code></pre>
 
         <h3>Task</h3>
 
-        <p>Create a simple “shopping list” application in part3/index.html.</p>
+        <p>
+          Create a simple “shopping list” application in
+          <code>part3/index.html</code>.
+        </p>
         <p>The shopping list should:</p>
 
         <ul>
@@ -735,14 +880,6 @@ console.log(fullString); // I'm taking <strong>CS 160</strong>!</code></pre>
           </li>
           <li>Clear the input fields.</li>
         </ul>
-
-        <div class="admonition-warning">
-          Make sure to keep the existing <code>handlebars.js</code> import at
-          the top of the HTML file; do not install the Handlebars dependency
-          yourself. In the autograder, we augment this import with a
-          <em>test spy</em> that makes sure that you called Handlebars
-          correctly.
-        </div>
 
         <p>
           We’re showing you how to use Handlebars because it’s a simple,
